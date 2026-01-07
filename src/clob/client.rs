@@ -1093,7 +1093,11 @@ impl<K: Kind> Client<Authenticated<K>> {
     pub async fn sign<S: Signer>(
         &self,
         signer: &S,
-        SignableOrder { order, order_type }: SignableOrder,
+        SignableOrder {
+            order,
+            order_type,
+            post_only,
+        }: SignableOrder,
     ) -> Result<SignedOrder> {
         let token_id = order.tokenId.to_string();
         let neg_risk = self.neg_risk(&token_id).await?.neg_risk;
@@ -1122,6 +1126,7 @@ impl<K: Kind> Client<Authenticated<K>> {
             signature,
             order_type,
             owner: self.state().credentials.key,
+            post_only,
         })
     }
 
@@ -1563,6 +1568,7 @@ impl<K: Kind> Client<Authenticated<K>> {
             expiration: None,
             taker: None,
             order_type: None,
+            post_only: Some(false),
             client: Client {
                 inner: Arc::clone(&self.inner),
                 #[cfg(feature = "heartbeats")]
