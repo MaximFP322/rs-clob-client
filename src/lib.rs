@@ -12,6 +12,8 @@ pub mod data;
 pub mod error;
 #[cfg(feature = "gamma")]
 pub mod gamma;
+#[cfg(feature = "clob")]
+pub mod hotpath;
 #[cfg(feature = "rtds")]
 pub mod rtds;
 pub(crate) mod serde_helpers;
